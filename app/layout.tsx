@@ -1,7 +1,7 @@
-import { Inter } from 'next/font/google'
-import './globals.scss'
+import { Arimo } from 'next/font/google'
+import '../styles/globals.scss'
 
-const inter = Inter({ subsets: ['latin'] })
+const arimo = Arimo({ subsets: ['latin'] })
 
 export default function RootLayout({
   children,
@@ -10,7 +10,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={arimo.className}>{children}</body>
     </html>
   )
 }
