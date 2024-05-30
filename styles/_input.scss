@@ -1,0 +1,15 @@
+.input {
+  @apply appearance-none outline-none bg-black-5 rounded-[16px] focus:outline-[1px] focus:outline-primary;
+
+  &--big {
+    @apply px-[12px] py-[24px];
+  }
+
+  &--small {
+    @apply p-[12px];
+  }
+
+  &::placeholder {
+    @apply text-black-50
+  }
+}

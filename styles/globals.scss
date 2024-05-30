@@ -1,9 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@use 'tailwind';
+@use 'input';
+@use 'button';
 
 html {
-  @apply text-black-75 h-[100vh];
+  @apply text-black-75 h-[100vh] overflow-x-hidden;
 }
 
 h1,
@@ -40,5 +40,5 @@ h6 {
 }
 
 a {
-  @apply text-primary;
+  @apply text-primary underline;
 }

@@ -1,0 +1,15 @@
+.btn {
+  @apply py-[8px] px-[24px] text-white rounded-[16px] shadow-md;
+
+  &--primary {
+    @apply bg-primary duration-300;
+
+    &:hover {
+      @apply translate-y-[-4px];
+    }
+  }
+
+  &--secondary {
+    @apply bg-secondary;
+  }
+}
