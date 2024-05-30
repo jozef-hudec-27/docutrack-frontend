@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useState } from 'react'
 import Link from 'next/link'
 
@@ -24,7 +26,7 @@ function RegisterForm() {
   const inputFields: InputHTMLAttributes<HTMLInputElement>[] = [
     {
       type: 'text',
-      className: 'input input--big w-[432px]',
+      className: 'input input--big',
       placeholder: 'Name',
       'aria-label': 'Name',
       autoComplete: 'name',
@@ -37,7 +39,7 @@ function RegisterForm() {
     },
     {
       type: 'email',
-      className: 'input input--big w-[432px]',
+      className: 'input input--big',
       placeholder: 'Email',
       'aria-label': 'Email',
       autoComplete: 'email',
@@ -47,7 +49,7 @@ function RegisterForm() {
     },
     {
       type: 'password',
-      className: 'input input--big w-[432px]',
+      className: 'input input--big',
       placeholder: 'Password',
       'aria-label': 'Password',
       autoComplete: 'new-password',
@@ -59,7 +61,7 @@ function RegisterForm() {
     },
     {
       type: 'password',
-      className: 'input input--big w-[432px]',
+      className: 'input input--big',
       placeholder: 'Confirm Password',
       'aria-label': 'Confirm Password',
       autoComplete: 'new-password',
@@ -70,7 +72,7 @@ function RegisterForm() {
   ]
 
   return (
-    <div>
+    <div className="w-full sm:w-[432px] px-[32px] sm:px-0">
       {' '}
       <form
         className="flex flex-col gap-[24px]"
@@ -90,7 +92,7 @@ function RegisterForm() {
       >
         <div className="flex flex-col gap-[16px]">
           {inputFields.slice(step === 1 ? 0 : 2, step === 1 ? 2 : 4).map((field) => {
-            return <input {...field} />
+            return <input {...field} key={field.placeholder} />
           })}
         </div>
 

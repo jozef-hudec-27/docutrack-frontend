@@ -16,29 +16,39 @@ h6 {
 }
 
 h1 {
-  @apply text-5xl;
+  @apply text-4xl sm:text-5xl;
 }
 
 h2 {
-  @apply text-4xl;
+  @apply text-3xl sm:text-4xl;
 }
 
 h3 {
-  @apply text-3xl;
+  @apply text-2xl sm:text-3xl;
 }
 
 h4 {
-  @apply text-2xl;
+  @apply text-xl sm:text-2xl;
 }
 
 h5 {
-  @apply text-xl;
+  @apply text-lg sm:text-xl;
 }
 
 h6 {
-  @apply text-lg;
+  @apply text-base sm:text-lg;
 }
 
 a {
   @apply text-primary underline;
+}
+
+.navbar {
+  &--big {
+    @apply px-[20px] sm:px-[80px] md:px-[160px] lg:px-[320px] py-[28px];
+  }
+
+  &--small {
+    @apply px-[160px] py-[24px];
+  }
 }
