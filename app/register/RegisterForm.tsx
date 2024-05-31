@@ -2,9 +2,14 @@
 
 import { useRef, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'react-hot-toast'
 
-import type { InputHTMLAttributes } from 'react'
+import api from '../api/axios-instance'
 
+import type { ComponentPropsWithRef } from 'react'
+import type { AxiosError } from 'axios'
 import type { RegisterFormState } from '../types/form-types'
 
 function RegisterForm() {
@@ -19,20 +24,54 @@ function RegisterForm() {
   const passwordInputRef = useRef<HTMLInputElement>(null)
   const nameInputRef = useRef<HTMLInputElement>(null)
 
+  const router = useRouter()
+
+  const registerMutation = useMutation({
+    mutationFn: async (data: RegisterFormState) => {
+      const { name, email, password, passwordConfirmation: password_confirmation } = data
+      return await api().post('/register', {
+        name,
+        email,
+        password,
+        password_confirmation,
+      })
+    },
+    onError: (error: AxiosError) => {
+      const err = error as { response: { data: { errors: { [key: string]: string[] } } } }
+      const errors = err?.response?.data?.errors
+
+      if (errors) {
+        toast.remove()
+
+        Object.keys(errors).forEach((field) => {
+          errors[field].map((errMsg) => {
+            toast(errMsg, { icon: '😠', duration: 10000 })
+          })
+        })
+      } else {
+        toast('Something went wrong.', { icon: '😠', duration: 6000 })
+      }
+    },
+    onSuccess: () => {
+      router.replace('/login')
+      toast("You've successfully registered! You can now log in.", { icon: '🎉', duration: 6000 })
+    },
+  })
+
   function changeFormData(key: keyof RegisterFormState, value: string) {
     setFormData((prevFormData) => ({ ...prevFormData, [key]: value }))
   }
 
-  const inputFields: InputHTMLAttributes<HTMLInputElement>[] = [
+  const inputFields: ComponentPropsWithRef<'input'>[] = [
     {
       type: 'text',
       className: 'input input--big',
+      id: 'input-name',
       placeholder: 'Name',
       'aria-label': 'Name',
       autoComplete: 'name',
       value: formData.name,
       onChange: (e) => changeFormData('name', e.target.value),
-      // @ts-ignore
       ref: nameInputRef,
       required: true,
       autoFocus: true,
@@ -40,6 +79,7 @@ function RegisterForm() {
     {
       type: 'email',
       className: 'input input--big',
+      id: 'input-email',
       placeholder: 'Email',
       'aria-label': 'Email',
       autoComplete: 'email',
@@ -50,18 +90,19 @@ function RegisterForm() {
     {
       type: 'password',
       className: 'input input--big',
+      id: 'input-password',
       placeholder: 'Password',
       'aria-label': 'Password',
       autoComplete: 'new-password',
       value: formData.password,
       onChange: (e) => changeFormData('password', e.target.value),
-      // @ts-ignore
       ref: passwordInputRef,
       required: true,
     },
     {
       type: 'password',
       className: 'input input--big',
+      id: 'input-password_confirmation',
       placeholder: 'Confirm Password',
       'aria-label': 'Confirm Password',
       autoComplete: 'new-password',
@@ -86,7 +127,7 @@ function RegisterForm() {
               passwordInputRef.current?.focus()
             }, 0)
           } else {
-            console.log('submit', formData)
+            registerMutation.mutate(formData)
           }
         }}
       >
