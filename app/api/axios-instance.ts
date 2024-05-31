@@ -14,7 +14,7 @@ const axiosInstance = axios.create(axiosOptions)
 
 const api = (sendAuthorization = false) => {
   if (sendAuthorization) {
-    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('authToken')}`
+    axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('auth-token')}`
   } else {
     delete axiosInstance.defaults.headers.common['Authorization']
   }

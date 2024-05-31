@@ -19,7 +19,7 @@ export default create<UserStore>()((set) => ({
   loggedIn: false,
   loading: true,
   fetchUser: async () => {
-    if (!localStorage.getItem('authToken')) {
+    if (!localStorage.getItem('auth-token')) {
       set({ loading: false })
       throw new Error()
     }

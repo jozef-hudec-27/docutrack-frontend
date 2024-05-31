@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast'
 
 import api from '../api/axios-instance'
 
-import type { ComponentPropsWithRef } from 'react'
+import type { ComponentPropsWithRef, FormEvent } from 'react'
 import type { AxiosError } from 'axios'
 import type { RegisterFormState } from '../types/form-types'
 
@@ -112,25 +112,24 @@ function RegisterForm() {
     },
   ]
 
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    if (step === 1) {
+      setStep(2)
+
+      setTimeout(() => {
+        passwordInputRef.current?.focus()
+      }, 0)
+    } else {
+      registerMutation.mutate(formData)
+    }
+  }
+
   return (
     <div className="w-full sm:w-[432px] px-[32px] sm:px-0">
       {' '}
-      <form
-        className="flex flex-col gap-[24px]"
-        onSubmit={(e) => {
-          e.preventDefault()
-
-          if (step === 1) {
-            setStep(2)
-
-            setTimeout(() => {
-              passwordInputRef.current?.focus()
-            }, 0)
-          } else {
-            registerMutation.mutate(formData)
-          }
-        }}
-      >
+      <form className="flex flex-col gap-[24px]" onSubmit={onSubmit}>
         <div className="flex flex-col gap-[16px]">
           {inputFields.slice(step === 1 ? 0 : 2, step === 1 ? 2 : 4).map((field) => {
             return <input {...field} key={field.placeholder} />
@@ -138,17 +137,21 @@ function RegisterForm() {
         </div>
 
         <div className="flex items-center gap-[16px]">
-          <button type="submit" className="btn btn--primary">
+          <button type="submit" className="btn btn--primary disabled:cursor-wait" disabled={registerMutation.isPending}>
             {step === 1 ? 'Continue' : 'Register'}
           </button>
 
           {step === 1 ? (
-            <Link href="">Already have an account?</Link>
+            <Link href="/login">Already have an account?</Link>
           ) : (
             <a
               href=""
               onClick={(e) => {
                 e.preventDefault()
+
+                if (registerMutation.isPending) {
+                  return
+                }
 
                 setStep(1)
 

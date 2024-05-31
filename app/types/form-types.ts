@@ -4,3 +4,8 @@ export type RegisterFormState = {
   password: string
   passwordConfirmation: string
 }
+
+export type LoginFormState = {
+  email: string
+  password: string
+}
