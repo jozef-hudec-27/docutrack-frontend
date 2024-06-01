@@ -3,7 +3,7 @@
 @use 'button';
 
 html {
-  @apply text-black-75 h-[100vh] overflow-x-hidden;
+  @apply text-black-75 h-fit overflow-x-hidden;
 }
 
 h1,
