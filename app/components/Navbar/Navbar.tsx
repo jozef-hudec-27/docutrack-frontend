@@ -1,14 +1,6 @@
-'use client'
-
-import { usePathname } from 'next/navigation'
-
-function Navbar() {
-  const pathname = usePathname()
-
-  const showBigNavbar = pathname.includes('/register') || pathname.includes('/login')
-
+function Navbar({ big }: { big?: boolean }) {
   return (
-    <nav className={`navbar ${showBigNavbar ? 'navbar--big' : 'navbar--small'}`}>
+    <nav className={`navbar ${big ? 'navbar--big' : 'navbar--small'}`}>
       <p className="text-4xl sm:text-5xl font-bold text-black-100 cursor-default">🔎 DocuTrack</p>
     </nav>
   )

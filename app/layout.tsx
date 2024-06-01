@@ -1,8 +1,8 @@
 import { Arimo } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 
+import FetchUser from './FetchUser'
 import ReactQueryProvider from './ReactQueryProvider'
-import Navbar from './components/Navbar/Navbar'
 
 import '../styles/globals.scss'
 
@@ -15,11 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <FetchUser />
+
       <ReactQueryProvider>
         <body className={arimo.className}>
           <Toaster toastOptions={{ className: '!text-black-75 !rounded-[16px]', duration: 5000 }} />
 
-          <Navbar />
           {children}
         </body>
       </ReactQueryProvider>
