@@ -44,11 +44,29 @@ a {
 }
 
 .navbar {
+  @apply flex items-center justify-between;
+
   &--big {
     @apply px-[20px] sm:px-[80px] md:px-[160px] lg:px-[320px] py-[28px];
   }
 
   &--small {
-    @apply px-[160px] py-[24px];
+    @apply px-[20px] sm:px-[40px] md:px-[80px] lg:px-[160px] py-[24px] border-b border-black-10;
+  }
+
+  &__link {
+    @apply text-black-100 hidden sm:block;
+  }
+
+  &__menu {
+    @apply bg-black-5 rounded-[16px] p-[12px] border-black-25 font-bold text-black-100;
+
+    &-item {
+      @apply p-[16px] rounded-[16px] hover:bg-black-10;
+    }
+
+    &-btn {
+      @apply sm:hidden text-black-100;
+    }
   }
 }

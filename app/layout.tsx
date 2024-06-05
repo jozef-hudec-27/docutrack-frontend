@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast'
 import FetchUser from './FetchUser'
 import ReactQueryProvider from './ReactQueryProvider'
 
+import '@szhsin/react-menu/dist/core.css'
 import '../styles/globals.scss'
 
 const arimo = Arimo({ subsets: ['latin'] })
