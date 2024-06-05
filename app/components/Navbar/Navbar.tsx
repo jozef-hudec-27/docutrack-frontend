@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { FileEarmarkPlus, BoxArrowRight } from 'react-bootstrap-icons'
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu'
 import { List } from 'react-bootstrap-icons'
@@ -8,6 +11,13 @@ type NavbarProps = {
 }
 
 function Navbar({ big }: NavbarProps) {
+  const router = useRouter()
+
+  function logOut() {
+    localStorage.removeItem('auth-token')
+    window.location.href = '/login'
+  }
+
   return (
     <nav className={`navbar ${big ? 'navbar--big' : 'navbar--small'}`}>
       <Link href="/" className="text-4xl sm:text-5xl font-bold text-black-100 no-underline whitespace-nowrap">
@@ -20,7 +30,7 @@ function Navbar({ big }: NavbarProps) {
             <FileEarmarkPlus size={24} />
           </Link>
 
-          <button type="button" aria-label="Logout" title="Log out" className="navbar__link">
+          <button type="button" aria-label="Logout" title="Log out" className="navbar__link" onClick={logOut}>
             <BoxArrowRight size={24} />
           </button>
 
@@ -32,8 +42,19 @@ function Navbar({ big }: NavbarProps) {
               </MenuButton>
             }
           >
-            <MenuItem className="navbar__menu-item">New document</MenuItem>
-            <MenuItem className="navbar__menu-item">Log out</MenuItem>
+            <MenuItem
+              className="navbar__menu-item"
+              onClick={(e) => {
+                e.syntheticEvent.preventDefault()
+
+                router.push('/documents/new')
+              }}
+            >
+              New document
+            </MenuItem>
+            <MenuItem className="navbar__menu-item" onClick={logOut}>
+              Log out
+            </MenuItem>
           </Menu>
         </div>
       )}
