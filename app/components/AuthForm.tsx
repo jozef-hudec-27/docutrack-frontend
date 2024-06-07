@@ -5,6 +5,8 @@ import { toast } from 'react-hot-toast'
 
 import api from '../api/axios-instance'
 import useUserStore from '../state/user-store'
+import useInputs from '../hooks/useInputs'
+import { changeFormDataFactory } from '../utils'
 
 import type { ComponentPropsWithRef, Dispatch, FormEvent, MutableRefObject, ReactNode, SetStateAction } from 'react'
 import type { UseMutationResult } from '@tanstack/react-query'
@@ -84,9 +86,7 @@ function AuthForm(props: AuthFormProps) {
     },
   })
 
-  function changeFormData(key: keyof LoginFormState | keyof RegisterFormState, value: string) {
-    setFormData((prevFormData) => ({ ...prevFormData, [key]: value }))
-  }
+  const changeFormData = changeFormDataFactory<LoginFormState & RegisterFormState>(setFormData)
 
   const inputFields: ComponentPropsWithRef<'input'>[] =
     formType === 'login'
@@ -179,16 +179,13 @@ function AuthForm(props: AuthFormProps) {
     mutation.mutate(formData)
   }
 
-  const inputs = formType === 'login' ? inputFields : props.filterInputs(inputFields)
+  const shownInputs = formType === 'login' ? inputFields : props.filterInputs(inputFields)
+  const inputElements = useInputs({ inputs: shownInputs })
 
   return (
     <div className="w-full sm:w-[432px] px-[32px] sm:px-0">
       <form className="flex flex-col gap-[24px]" onSubmit={onSubmit}>
-        <div className="flex flex-col gap-[16px]">
-          {inputs.map((field) => (
-            <input {...field} key={field.placeholder} />
-          ))}
-        </div>
+        <div className="flex flex-col gap-[16px]">{inputElements}</div>
 
         <div className="flex items-center gap-[16px]">
           <button type="submit" className="btn btn--primary disabled:cursor-wait" disabled={mutation.isPending}>

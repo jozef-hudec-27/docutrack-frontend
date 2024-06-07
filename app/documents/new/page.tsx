@@ -7,6 +7,8 @@ import { toast } from 'react-hot-toast'
 import Navbar from '../../components/Navbar/Navbar'
 import withAuth from '../../hoc/with-auth'
 import { fileTypes } from '../../config'
+import useInputs from '../../hooks/useInputs'
+import { changeFormDataFactory } from '../../utils'
 
 import type { FormEvent } from 'react'
 
@@ -40,6 +42,31 @@ function NewDocumentPage() {
     e.preventDefault()
   }
 
+  const changeFormData = changeFormDataFactory<NewDocumentFormState>(setFormData)
+
+  const inputElements = useInputs<NewDocumentFormState>({
+    inputs: [
+      {
+        type: 'text',
+        id: 'input-name',
+        className: 'input input--small w-full',
+        placeholder: 'Name',
+        'aria-label': 'Name',
+        value: formData.name,
+        onChange: (e) => changeFormData('name', e.target.value),
+      },
+      {
+        type: 'text',
+        id: 'input-tag',
+        className: 'input input--small w-full',
+        placeholder: 'Tag',
+        'aria-label': 'Tag',
+        value: formData.tag,
+        onChange: (e) => changeFormData('tag', e.target.value),
+      },
+    ],
+  })
+
   return (
     <>
       <Navbar />
@@ -63,24 +90,7 @@ function NewDocumentPage() {
             </div>
           </FileUploader>
 
-          <input
-            type="text"
-            id="input-name"
-            className="input input--small w-full"
-            placeholder="Name"
-            aria-label="Name"
-            value={formData.name}
-            onChange={(e) => setFormData((prevFormData) => ({ ...prevFormData, name: e.target.value }))}
-          />
-          <input
-            type="text"
-            id="input-tag"
-            className="input input--small w-full"
-            placeholder="Tag"
-            aria-label="Tag"
-            value={formData.tag}
-            onChange={(e) => setFormData((prevFormData) => ({ ...prevFormData, tag: e.target.value }))}
-          />
+          {inputElements}
 
           <textarea
             id="input-description"
@@ -88,7 +98,7 @@ function NewDocumentPage() {
             placeholder="Description"
             aria-label="Description"
             value={formData.description}
-            onChange={(e) => setFormData((prevFormData) => ({ ...prevFormData, tag: e.target.value }))}
+            onChange={(e) => changeFormData('description', e.target.value)}
           ></textarea>
 
           <button type="submit" className="btn btn--secondary w-full">
