@@ -22,6 +22,7 @@ const config: Config = {
           25: '#C2C4C5',
           10: '#E7E8E8',
           5: '#F3F3F3',
+          2: '#FAFAFA',
         },
       },
     },

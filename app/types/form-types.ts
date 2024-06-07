@@ -9,3 +9,9 @@ export type LoginFormState = {
   email: string
   password: string
 }
+
+export type NewDocumentFormState = {
+  name: string
+  tag: string
+  description?: string
+}

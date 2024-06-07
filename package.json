@@ -16,6 +16,7 @@
     "react": "^18",
     "react-bootstrap-icons": "^1.11.4",
     "react-dom": "^18",
+    "react-drag-drop-files": "^2.3.10",
     "react-hot-toast": "^2.4.1",
     "sass": "^1.77.2",
     "zustand": "^4.5.2"

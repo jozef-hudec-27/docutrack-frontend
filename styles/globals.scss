@@ -59,10 +59,10 @@ a {
   }
 
   &__menu {
-    @apply bg-black-5 rounded-[16px] p-[12px] border-black-25 font-bold text-black-100;
+    @apply bg-black-2 rounded-[16px] p-[12px] border-black-25 font-bold text-black-100;
 
     &-item {
-      @apply p-[16px] rounded-[16px] hover:bg-black-10;
+      @apply p-[16px] rounded-[16px] hover:bg-black-5;
     }
 
     &-btn {
