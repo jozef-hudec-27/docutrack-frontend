@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast'
 import api from '../api/axios-instance'
 import useUserStore from '../state/user-store'
 import useInputs from '../hooks/useInputs'
-import { changeFormDataFactory } from '../utils'
+import { changeFormDataFactory, onMutationError } from '../utils'
 
 import type { ComponentPropsWithRef, Dispatch, FormEvent, MutableRefObject, ReactNode, SetStateAction } from 'react'
 import type { UseMutationResult } from '@tanstack/react-query'
@@ -57,22 +57,7 @@ function AuthForm(props: AuthFormProps) {
             }
       )
     },
-    onError: (error: AxiosError) => {
-      const err = error as { response: { data: { errors: { [key: string]: string[] } } } }
-      const errors = err?.response?.data?.errors
-
-      if (errors) {
-        toast.remove()
-
-        Object.keys(errors).forEach((field) => {
-          errors[field].map((errMsg) => {
-            toast(errMsg, { icon: '😠', duration: 10000 })
-          })
-        })
-      } else {
-        toast('Something went wrong.', { icon: '😠', duration: 6000 })
-      }
-    },
+    onError: (error: AxiosError) => onMutationError(error, toast),
     onSuccess: (data) => {
       if (formType === 'login') {
         const authToken = data.data

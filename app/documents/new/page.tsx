@@ -10,7 +10,7 @@ import Navbar from '../../components/Navbar/Navbar'
 import withAuth from '../../hoc/with-auth'
 import { fileTypes } from '../../config'
 import useInputs from '../../hooks/useInputs'
-import { changeFormDataFactory } from '../../utils'
+import { changeFormDataFactory, onMutationError } from '../../utils'
 import api from '../../api/axios-instance'
 
 import type { FormEvent } from 'react'
@@ -35,22 +35,7 @@ function NewDocumentPage() {
         },
       })
     },
-    onError: (error: AxiosError) => {
-      const err = error as { response: { data: { errors: { [key: string]: string[] } } } }
-      const errors = err?.response?.data?.errors
-
-      if (errors) {
-        toast.remove()
-
-        Object.keys(errors).forEach((field) => {
-          errors[field].map((errMsg) => {
-            toast(errMsg, { icon: '😠', duration: 10000 })
-          })
-        })
-      } else {
-        toast('Something went wrong.', { icon: '😠', duration: 6000 })
-      }
-    },
+    onError: (error: AxiosError) => onMutationError(error, toast),
     onSuccess: () => {
       router.replace('/')
       toast('Document added.')
