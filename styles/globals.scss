@@ -6,6 +6,10 @@ html {
   @apply text-black-75 h-fit overflow-x-hidden;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 h1,
 h2,
 h3,
@@ -68,5 +72,13 @@ a {
     &-btn {
       @apply sm:hidden text-black-100;
     }
+  }
+}
+
+.document {
+  &__action-btn {
+    @apply hover:scale-110 hover:text-black-100 focus:scale-110 focus:text-black-100 duration-300 outline-none;
+
+    transition-property: transform;
   }
 }

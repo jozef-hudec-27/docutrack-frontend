@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { Filter, Tag, FileEarmark } from 'react-bootstrap-icons'
 
 import Navbar from './components/Navbar/Navbar'
+import Document from './components/Document/Document'
 import useDocumentStore from './state/document-store'
 import withAuth from './hoc/with-auth'
 
@@ -54,25 +55,9 @@ function Home() {
           </div>
         )}
 
-        <div className="flex flex-col gap-[32px]">
+        <div className="flex flex-col gap-[32px] w-1/3">
           {documents.map((document) => {
-            return (
-              <div key={document.id} className="flex flex-col gap-[8px] p-[12px] hover:bg-black-2 rounded-[8px]">
-                <div className="flex items-center gap-[4px] text-black-50">
-                  <Tag size={18} aria-hidden />
-                  <p className="text-sm" aria-label={`Document tag: ${document.tag}`}>
-                    {document.tag}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-[12px] text-black-100">
-                  <FileEarmark size={24} />
-                  <p>{document.name}</p>
-                </div>
-
-                <button className='w-fit mt-[8px] text-black-100 text-sm font-bold'>...more</button>
-              </div>
-            )
+            return <Document key={document.id} document={document} />
           })}
         </div>
       </section>

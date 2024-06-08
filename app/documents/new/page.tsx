@@ -10,7 +10,7 @@ import Navbar from '../../components/Navbar/Navbar'
 import withAuth from '../../hoc/with-auth'
 import { fileTypes } from '../../config'
 import useInputs from '../../hooks/useInputs'
-import { changeFormDataFactory, onMutationError } from '../../utils'
+import { changeFormDataFactory, onMutationError, limitLength } from '../../utils'
 import api from '../../api/axios-instance'
 
 import type { FormEvent } from 'react'
@@ -52,10 +52,6 @@ function NewDocumentPage() {
 
   function onSizeError() {
     toast('File is too big (max 10 MB).', { icon: '😠' })
-  }
-
-  function limitLength(string: string) {
-    return string.length < 25 ? string : `${string.slice(0, 30)}...`
   }
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -118,7 +114,7 @@ function NewDocumentPage() {
             required
           >
             <div className="flex justify-center items-center px-[12px] py-[12px] border-black-5 border-[2px] rounded-[16px] cursor-pointer">
-              <p className="text-black-50">{file ? limitLength(file.name) : 'Drop file or click to upload'}</p>
+              <p className="text-black-50">{file ? limitLength(file.name, 30) : 'Drop file or click to upload'}</p>
             </div>
           </FileUploader>
 

@@ -26,3 +26,7 @@ export function onMutationError(error: AxiosError, toast: ToastFn) {
     toast('Something went wrong.', { icon: '😠', duration: 6000 })
   }
 }
+
+export function limitLength(string: string, maxLength: number) {
+  return string.length < maxLength ? string : `${string.slice(0, maxLength)}...`
+}
