@@ -1,10 +1,14 @@
 'use client'
 
 import Link from 'next/link'
+import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { FileEarmarkPlus, BoxArrowRight } from 'react-bootstrap-icons'
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu'
 import { List } from 'react-bootstrap-icons'
+import { toast } from 'react-hot-toast'
+
+import api from '../../api/axios-instance'
 
 type NavbarProps = {
   big?: boolean
@@ -13,9 +17,22 @@ type NavbarProps = {
 function Navbar({ big }: NavbarProps) {
   const router = useRouter()
 
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      return await api(true).post('/logout')
+    },
+    onError: () => {
+      toast.remove()
+      toast('Error logging out.', { icon: '😠', duration: 6000 })
+    },
+    onSuccess: () => {
+      localStorage.removeItem('auth-token')
+      window.location.href = '/login'
+    },
+  })
+
   function logOut() {
-    localStorage.removeItem('auth-token')
-    window.location.href = '/login'
+    logoutMutation.mutate()
   }
 
   return (
@@ -30,7 +47,14 @@ function Navbar({ big }: NavbarProps) {
             <FileEarmarkPlus size={24} />
           </Link>
 
-          <button type="button" aria-label="Logout" title="Log out" className="navbar__link" onClick={logOut}>
+          <button
+            type="button"
+            aria-label="Logout"
+            title="Log out"
+            className="navbar__link disabled:cursor-wait"
+            onClick={logOut}
+            disabled={logoutMutation.isPending || logoutMutation.isSuccess}
+          >
             <BoxArrowRight size={24} />
           </button>
 
@@ -52,7 +76,16 @@ function Navbar({ big }: NavbarProps) {
             >
               New document
             </MenuItem>
-            <MenuItem className="navbar__menu-item" onClick={logOut}>
+            <MenuItem
+              className="navbar__menu-item"
+              onClick={() => {
+                if (logoutMutation.isPending || logoutMutation.isSuccess) {
+                  return
+                }
+
+                logOut()
+              }}
+            >
               Log out
             </MenuItem>
           </Menu>
