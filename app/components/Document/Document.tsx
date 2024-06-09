@@ -34,7 +34,7 @@ function Document({ document }: DocumentProps) {
       </div>
 
       <div className="flex items-center gap-[12px] text-black-100">
-        <FileEarmark size={24} aria-hidden />
+        <FileEarmark size={24} className='min-w-[24px]' aria-hidden />
         <p>{limitLength(document.name, 75)}</p>
       </div>
 
