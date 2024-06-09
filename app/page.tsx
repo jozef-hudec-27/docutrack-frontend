@@ -60,8 +60,8 @@ function Home() {
 
         {!documentsLoading && !!documents.length && (
           <div className="flex flex-col gap-[32px] w-11/12 md:w-2/3 lg:w-1/3">
-            {documents.map((document) => {
-              return <Document key={document.id} document={document} />
+            {documents.map((doc) => {
+              return <Document key={doc.id} doc={doc} />
             })}
           </div>
         )}
