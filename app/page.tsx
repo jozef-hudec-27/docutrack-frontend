@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import Link from 'next/link'
 import { useShallow } from 'zustand/react/shallow'
 import { Filter, Tag, FileEarmark } from 'react-bootstrap-icons'
 
@@ -49,16 +50,21 @@ function Home() {
         {documentsLoading && <p>Loading your documents...</p>}
 
         {!documentsLoading && !documents.length && (
-          <div>
-            <p>You don't have any documents yet.</p>
-          </div>
+          <p>
+            You don't have any documents yet.{' '}
+            <Link href="/documents/new" aria-label="Add some documents">
+              Add some.
+            </Link>
+          </p>
         )}
 
-        <div className="flex flex-col gap-[32px] w-11/12 md:w-2/3 lg:w-1/3">
-          {documents.map((document) => {
-            return <Document key={document.id} document={document} />
-          })}
-        </div>
+        {!documentsLoading && !!documents.length && (
+          <div className="flex flex-col gap-[32px] w-11/12 md:w-2/3 lg:w-1/3">
+            {documents.map((document) => {
+              return <Document key={document.id} document={document} />
+            })}
+          </div>
+        )}
       </section>
     </>
   )
