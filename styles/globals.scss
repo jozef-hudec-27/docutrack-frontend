@@ -82,3 +82,7 @@ a {
     transition-property: transform;
   }
 }
+
+.ReactModal__Overlay {
+  background-color: rgba(12, 20, 24, 0.5) !important;
+}

@@ -3,11 +3,13 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { useShallow } from 'zustand/react/shallow'
-import { Filter, Tag, FileEarmark } from 'react-bootstrap-icons'
+import { Filter } from 'react-bootstrap-icons'
+
+import useDocumentStore from './state/document-store'
 
 import Navbar from './components/Navbar/Navbar'
 import Document from './components/Document/Document'
-import useDocumentStore from './state/document-store'
+import EditDocumentModal from './components/Document/EditDocumentModal'
 import withAuth from './hoc/with-auth'
 
 function Home() {
@@ -66,6 +68,8 @@ function Home() {
           </div>
         )}
       </section>
+
+      <EditDocumentModal />
     </>
   )
 }

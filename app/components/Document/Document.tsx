@@ -1,6 +1,9 @@
 import { useRef, useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import { toast } from 'react-hot-toast'
 import { FileEarmark, Tag, Download, Pencil, Trash3 } from 'react-bootstrap-icons'
+
+import useDocumentStore from '../../state/document-store'
 
 import api from '../../api/axios-instance'
 import { limitLength } from '../../utils'
@@ -15,6 +18,8 @@ function Document({ doc }: DocumentProps) {
   const [expanded, setExpanded] = useState(false)
   const moreButtonRef = useRef<HTMLButtonElement>(null)
 
+  const [setDocumentToEdit] = useDocumentStore(useShallow((state) => [state.setDocumentToEdit]))
+
   async function downloadFile() {
     const fileName = doc.file_path.split('documents/')[1]
 
@@ -23,7 +28,7 @@ function Document({ doc }: DocumentProps) {
       const blob = response.data
       const fileExtension = fileName.split('.')[1]
       const url = window.URL.createObjectURL(blob)
-    
+
       const downloadLink = document.createElement('a')
       downloadLink.style.display = 'none'
       downloadLink.href = url
@@ -71,7 +76,12 @@ function Document({ doc }: DocumentProps) {
               <Download size={16} aria-hidden />
             </button>
 
-            <button className="document__action-btn" aria-label="Edit">
+            <button
+              className="document__action-btn"
+              aria-label="Edit"
+              title="Edit"
+              onClick={() => setDocumentToEdit(doc)}
+            >
               <Pencil size={16} aria-hidden />
             </button>
 

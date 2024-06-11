@@ -10,3 +10,7 @@ export type Document = {
 }
 
 export type FetchDocumentsFn = () => void
+
+export type setDocumentToEditFn = (document: Document | undefined) => void
+
+export type SetDocumentsFn = (updater: Document[] | ((prevDocuments: Document[]) => Document[])) => void

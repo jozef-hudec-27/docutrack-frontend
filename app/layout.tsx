@@ -22,7 +22,7 @@ export default function RootLayout({
         <body className={arimo.className}>
           <Toaster toastOptions={{ className: '!text-black-75 !rounded-[16px]', duration: 5000 }} />
 
-          {children}
+          <div id="root">{children}</div>
         </body>
       </ReactQueryProvider>
     </html>

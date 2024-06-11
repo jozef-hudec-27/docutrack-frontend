@@ -1,14 +1,18 @@
 import { create } from 'zustand'
 
 import api from '../api/axios-instance'
+import { createSetter } from './state-utils'
 
-import type { Document, FetchDocumentsFn } from '../types/document-types'
+import type { Document, FetchDocumentsFn, SetDocumentsFn, setDocumentToEditFn } from '../types/document-types'
 
 type DocumentsStore = {
   documents: Document[]
   loading: boolean
   fetched: boolean
   fetchDocuments: FetchDocumentsFn
+  setDocuments: SetDocumentsFn
+  documentToEdit?: Document
+  setDocumentToEdit: setDocumentToEditFn
 }
 
 export default create<DocumentsStore>()((set) => ({
@@ -25,4 +29,7 @@ export default create<DocumentsStore>()((set) => ({
       set({ loading: false })
     }
   },
+  setDocuments: createSetter<Document[], DocumentsStore>('documents', set),
+  documentToEdit: undefined,
+  setDocumentToEdit: (document) => set({ documentToEdit: document }),
 }))
