@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation'
 import { FileUploader } from 'react-drag-drop-files'
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
+import { useShallow } from 'zustand/react/shallow'
+
+import useDocumentStore from '../../state/document-store'
 
 import Navbar from '../../components/Navbar/Navbar'
 import withAuth from '../../hoc/with-auth'
@@ -27,6 +30,8 @@ function NewDocumentPage() {
 
   const router = useRouter()
 
+  const [addDocument] = useDocumentStore(useShallow((state) => [state.addDocument]))
+
   const newDocumentMutation = useMutation({
     mutationFn: async (data: NewDocumentFormState & { file: File }) => {
       return await api(true).post('/documents', data, {
@@ -36,7 +41,8 @@ function NewDocumentPage() {
       })
     },
     onError: (error: AxiosError) => onMutationError(error, toast),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      addDocument(data.data)
       router.replace('/')
       toast('Document added.')
     },
