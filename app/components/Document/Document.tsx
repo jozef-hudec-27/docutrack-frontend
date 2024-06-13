@@ -18,7 +18,9 @@ function Document({ doc }: DocumentProps) {
   const [expanded, setExpanded] = useState(false)
   const moreButtonRef = useRef<HTMLButtonElement>(null)
 
-  const [setDocumentToEdit] = useDocumentStore(useShallow((state) => [state.setDocumentToEdit]))
+  const [setDocumentToEdit, setDocumentToDelete] = useDocumentStore(
+    useShallow((state) => [state.setDocumentToEdit, state.setDocumentToDelete])
+  )
 
   async function downloadFile() {
     const fileName = doc.file_path.split('documents/')[1]
@@ -85,7 +87,12 @@ function Document({ doc }: DocumentProps) {
               <Pencil size={16} aria-hidden />
             </button>
 
-            <button className="document__action-btn" aria-label="Delete">
+            <button
+              className="document__action-btn"
+              aria-label="Delete"
+              title="Delete"
+              onClick={() => setDocumentToDelete(doc)}
+            >
               <Trash3 size={16} aria-hidden />
             </button>
           </div>

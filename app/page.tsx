@@ -10,6 +10,7 @@ import useDocumentStore from './state/document-store'
 import Navbar from './components/Navbar/Navbar'
 import Document from './components/Document/Document'
 import EditDocumentModal from './components/Document/EditDocumentModal'
+import DeleteDocumentModal from './components/Document/DeleteDocumentModal'
 import withAuth from './hoc/with-auth'
 
 function Home() {
@@ -70,6 +71,7 @@ function Home() {
       </section>
 
       <EditDocumentModal />
+      <DeleteDocumentModal />
     </>
   )
 }

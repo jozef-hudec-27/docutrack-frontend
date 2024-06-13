@@ -12,7 +12,9 @@ type DocumentsStore = {
   fetchDocuments: FetchDocumentsFn
   setDocuments: SetDocumentsFn
   documentToEdit?: Document
+  documentToDelete?: Document
   setDocumentToEdit: setDocumentToEditFn
+  setDocumentToDelete: setDocumentToEditFn
 }
 
 export default create<DocumentsStore>()((set) => ({
@@ -31,5 +33,7 @@ export default create<DocumentsStore>()((set) => ({
   },
   setDocuments: createSetter<Document[], DocumentsStore>('documents', set),
   documentToEdit: undefined,
+  documentToDelete: undefined,
   setDocumentToEdit: (document) => set({ documentToEdit: document }),
+  setDocumentToDelete: (document) => set({ documentToDelete: document }),
 }))
