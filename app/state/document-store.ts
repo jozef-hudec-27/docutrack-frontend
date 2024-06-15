@@ -5,7 +5,7 @@ import { createSetter } from './state-utils'
 
 import type { Document, FetchDocumentsFn, SetDocumentsFn, setDocumentToEditFn } from '../types/document-types'
 
-type DocumentsStore = {
+type DocumentStore = {
   documents: Document[]
   loading: boolean
   fetched: boolean
@@ -18,7 +18,7 @@ type DocumentsStore = {
   setDocumentToDelete: setDocumentToEditFn
 }
 
-export default create<DocumentsStore>()((set) => ({
+export default create<DocumentStore>()((set) => ({
   documents: [],
   loading: true,
   fetched: false,
@@ -32,7 +32,7 @@ export default create<DocumentsStore>()((set) => ({
       set({ loading: false })
     }
   },
-  setDocuments: createSetter<Document[], DocumentsStore>('documents', set),
+  setDocuments: createSetter<Document[], DocumentStore>('documents', set),
   addDocument: (document) => set((state) => ({ documents: [document, ...state.documents] })),
   documentToEdit: undefined,
   documentToDelete: undefined,

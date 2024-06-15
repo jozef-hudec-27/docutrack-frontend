@@ -3,14 +3,15 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { useShallow } from 'zustand/react/shallow'
-import { Filter } from 'react-bootstrap-icons'
 
 import useDocumentStore from './state/document-store'
 
 import Navbar from './components/Navbar/Navbar'
+import FilterDocumentsForm from './components/Document/FilterDocumentsForm'
 import Document from './components/Document/Document'
 import EditDocumentModal from './components/Document/EditDocumentModal'
 import DeleteDocumentModal from './components/Document/DeleteDocumentModal'
+import FilteredDocumentsModal from './components/Document/FilteredDocumentsModal'
 import withAuth from './hoc/with-auth'
 
 function Home() {
@@ -29,24 +30,7 @@ function Home() {
       <Navbar />
 
       <section className="mt-[96px] flex justify-center px-[12px]">
-        <div className="flex justify-center items-center gap-[16px] flex-wrap">
-          <input
-            type="text"
-            className="input input--small w-[300px]"
-            placeholder="Name"
-            aria-label="Filter documents by name"
-          />
-          <input
-            type="text"
-            className="input input--small w-[150px]"
-            placeholder="Tag"
-            aria-label="Filter documents by tag"
-          />
-          <button className="btn btn--secondary flex items-center gap-[8px] ml-[8px]" title="Filter documents">
-            <Filter size={24} aria-hidden />
-            Filter
-          </button>
-        </div>
+        <FilterDocumentsForm />
       </section>
 
       <section className="mt-[96px] flex justify-center">
@@ -70,6 +54,7 @@ function Home() {
         )}
       </section>
 
+      <FilteredDocumentsModal />
       <EditDocumentModal />
       <DeleteDocumentModal />
     </>
