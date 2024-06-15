@@ -65,7 +65,7 @@ function FilterDocumentsForm(props: FilterDocumentsFormProps) {
   })
 
   return (
-    <form className="flex justify-center items-center gap-[16px] flex-wrap">
+    <form className="flex justify-center items-center gap-[16px] flex-wrap" onSubmit={(e) => e.preventDefault()}>
       {inputElements}
       <button className="btn btn--secondary flex items-center gap-[8px] ml-[8px]" title="Filter documents">
         <Filter size={24} aria-hidden />

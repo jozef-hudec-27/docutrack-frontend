@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
 
 import useDocumentStore from '../../state/document-store'
+import useFilterDocumentStore from '../../state/filter-document-store'
 
 import Modal from '../modal/Modal'
 import api from '../../api/axios-instance'
@@ -12,6 +13,9 @@ import type { FormEvent } from 'react'
 function DeleteDocumentModal() {
   const [documentToDelete, setDocumentToDelete, setDocuments] = useDocumentStore(
     useShallow((state) => [state.documentToDelete, state.setDocumentToDelete, state.setDocuments])
+  )
+  const [filteredDocuments, setFilteredDocuments] = useFilterDocumentStore(
+    useShallow((state) => [state.filteredDocuments, state.setFilteredDocuments])
   )
 
   const deleteDocumentMutation = useMutation({
@@ -24,6 +28,10 @@ function DeleteDocumentModal() {
     onSuccess: () => {
       setDocumentToDelete(undefined)
       setDocuments((prevDocuments) => prevDocuments.filter((doc) => doc.id !== documentToDelete?.id))
+
+      if (filteredDocuments.length) {
+        setFilteredDocuments((prevDocuments) => prevDocuments.filter((doc) => doc.id !== documentToDelete?.id))
+      }
     },
   })
 

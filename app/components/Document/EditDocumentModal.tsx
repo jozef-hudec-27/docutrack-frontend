@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-hot-toast'
 
 import useDocumentStore from '../../state/document-store'
+import useFilterDocumentStore from '../../state/filter-document-store'
 
 import Modal from '../modal/Modal'
 import useInputs from '../../hooks/useInputs'
@@ -12,6 +13,7 @@ import api from '../../api/axios-instance'
 
 import type { ComponentPropsWithRef, FormEvent } from 'react'
 import type { NewDocumentFormState } from '../../types/form-types'
+import type { Document } from '../../types/document-types'
 
 function EditDocumentModal() {
   const [inputs, setInputs] = useState<ComponentPropsWithRef<'input'>[]>([])
@@ -24,6 +26,9 @@ function EditDocumentModal() {
   const [documentToEdit, setDocumentToEdit, setDocuments] = useDocumentStore(
     useShallow((state) => [state.documentToEdit, state.setDocumentToEdit, state.setDocuments])
   )
+  const [filteredDocuments, setFilteredDocuments] = useFilterDocumentStore(
+    useShallow((state) => [state.filteredDocuments, state.setFilteredDocuments])
+  )
 
   const editDocumentMutation = useMutation({
     mutationFn: async (data: NewDocumentFormState) => {
@@ -34,18 +39,26 @@ function EditDocumentModal() {
     },
     onSuccess: () => {
       setDocumentToEdit(undefined)
-      setDocuments((prevDocuments) => {
-        const updatedDocuments = prevDocuments.map((doc) =>
-          doc.id === documentToEdit.id
-            ? {
-                ...doc,
-                ...formData,
-              }
-            : { ...doc }
-        )
 
+      const updateDocuments = (doc: Document) =>
+        doc.id === documentToEdit.id
+          ? {
+              ...doc,
+              ...formData,
+            }
+          : { ...doc }
+
+      setDocuments((prevDocuments) => {
+        const updatedDocuments = prevDocuments.map(updateDocuments)
         return updatedDocuments
       })
+
+      if (filteredDocuments.length) {
+        setFilteredDocuments((prevDocuments) => {
+          const updatedDocuments = prevDocuments.map(updateDocuments)
+          return updatedDocuments
+        })
+      }
     },
   })
 
@@ -118,31 +131,29 @@ function EditDocumentModal() {
   }
 
   return (
-    documentToEdit && (
-      <Modal isOpen={!!documentToEdit} setIsOpen={setIsOpen} contentLabel="Edit document modal">
-        <form className="flex flex-col gap-[16px]" onSubmit={onSubmit}>
-          {inputElements}
+    <Modal isOpen={!!documentToEdit} setIsOpen={setIsOpen} contentLabel="Edit document modal">
+      <form className="flex flex-col gap-[16px]" onSubmit={onSubmit}>
+        {inputElements}
 
-          <textarea
-            id="input-description"
-            className="input input--small w-full min-h-[128px]"
-            placeholder="Description"
-            aria-label="Description"
-            value={formData.description}
-            onChange={(e) => changeFormData('description', e.target.value)}
-            maxLength={2000}
-          ></textarea>
+        <textarea
+          id="input-description"
+          className="input input--small w-full min-h-[128px]"
+          placeholder="Description"
+          aria-label="Description"
+          value={formData.description}
+          onChange={(e) => changeFormData('description', e.target.value)}
+          maxLength={2000}
+        ></textarea>
 
-          <button
-            type="submit"
-            className="btn btn--secondary disabled:cursor-wait"
-            disabled={editDocumentMutation.isPending}
-          >
-            Save
-          </button>
-        </form>
-      </Modal>
-    )
+        <button
+          type="submit"
+          className="btn btn--secondary disabled:cursor-wait"
+          disabled={editDocumentMutation.isPending}
+        >
+          Save
+        </button>
+      </form>
+    </Modal>
   )
 }
 
