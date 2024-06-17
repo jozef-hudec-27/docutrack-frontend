@@ -8,6 +8,7 @@ import type { Document, FetchDocumentsFn, SetDocumentsFn, setDocumentToEditFn } 
 type DocumentStore = {
   documents: Document[]
   loading: boolean
+  initialLoading: boolean
   fetched: boolean
   fetchDocuments: FetchDocumentsFn
   setDocuments: SetDocumentsFn
@@ -20,16 +21,24 @@ type DocumentStore = {
 
 export default create<DocumentStore>()((set) => ({
   documents: [],
-  loading: true,
+  loading: false,
+  initialLoading: false,
   fetched: false,
-  fetchDocuments: async () => {
-    set({ loading: true })
+  fetchDocuments: async (page = 1, initial = false) => {
+    const getSetObj = (val: boolean) => {
+      return initial ? { initialLoading: val } : { loading: val }
+    }
+
+    set(getSetObj(true))
 
     try {
-      const response = await api(true).get('/documents')
-      set({ documents: response.data, loading: false, fetched: true })
+      const response = await api(true).get(`/documents?page=${page}`)
+      set({ fetched: true })
+      set(getSetObj(false))
+
+      return response.data
     } catch (error) {
-      set({ loading: false })
+      set(getSetObj(false))
     }
   },
   setDocuments: createSetter<Document[], DocumentStore>('documents', set),

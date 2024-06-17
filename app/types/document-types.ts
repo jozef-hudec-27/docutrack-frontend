@@ -9,7 +9,21 @@ export type Document = {
   description?: string
 }
 
-export type FetchDocumentsFn = () => void
+type DocumentsResponse = {
+  current_page: number
+  data: Document[]
+  first_page_url: string
+  from: number
+  last_page: number
+  last_page_url: string
+  next_page_url: string
+  per_page: number
+  prev_page_url: string
+  to: number
+  total: number
+}
+
+export type FetchDocumentsFn = (page?: number, initial?: boolean) => Promise<DocumentsResponse>
 
 export type setDocumentToEditFn = (document: Document | undefined) => void
 
