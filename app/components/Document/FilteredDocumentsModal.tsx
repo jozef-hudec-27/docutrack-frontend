@@ -31,7 +31,7 @@ function FilteredDocumentsModal() {
     <Modal isOpen={!!nameFilter || !!tagFilter} setIsOpen={function () {}} cls="!w-11/12 !sm:w-3/4">
       <FilterDocumentsForm modal />
 
-      <div className="flex flex-col gap-[32px] w-11/12 md:w-1/2 mx-auto mt-[96px] h-[400px] overflow-y-auto">
+      <div className="flex flex-col gap-[32px] w-11/12 md:w-1/2 mx-auto mt-[96px] h-[200px] sm:h-[400px] overflow-y-auto">
         {!!filteredDocuments.length ? (
           filteredDocuments.map((doc) => {
             return <Document key={doc.id} doc={doc} />
