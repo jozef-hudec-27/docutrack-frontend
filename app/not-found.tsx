@@ -1,18 +1,14 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 function NotFoundPage() {
-  const router = useRouter()
-
   return (
     <div className="h-[100vh] flex justify-center items-center">
       <div className="flex flex-col gap-[32px] px-[16px]">
         <h1 className="gradient-text text-center">😭 Oops, page not found...</h1>
 
-        <button className="btn btn--primary" onClick={() => router.replace('/')}>
+        <Link className="btn btn--primary no-underline flex justify-center" href="/">
           Go home
-        </button>
+        </Link>
       </div>
     </div>
   )

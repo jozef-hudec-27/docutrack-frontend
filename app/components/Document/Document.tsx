@@ -74,11 +74,18 @@ function Document({ doc }: DocumentProps) {
         <>
           {doc.description && <p className="mt-[8px] text-black-75 text-sm text-justify">{doc.description} </p>}
           <div className="flex gap-[24px] mt-[16px] text-black-75">
-            <button className="document__action-btn" aria-label="Download" title="Download" onClick={downloadFile}>
+            <button
+              type="button"
+              className="document__action-btn"
+              aria-label="Download"
+              title="Download"
+              onClick={downloadFile}
+            >
               <Download size={16} aria-hidden />
             </button>
 
             <button
+              type="button"
               className="document__action-btn"
               aria-label="Edit"
               title="Edit"
@@ -88,6 +95,7 @@ function Document({ doc }: DocumentProps) {
             </button>
 
             <button
+              type="button"
               className="document__action-btn"
               aria-label="Delete"
               title="Delete"
