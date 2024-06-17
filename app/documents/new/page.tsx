@@ -48,7 +48,18 @@ function NewDocumentPage() {
     },
   })
 
+  function removeFileExtension(fileName: string) {
+    if (fileTypes.some((type) => fileName.endsWith(`.${type.toLowerCase()}`))) {
+      return fileName.split('.').slice(0, -1).join('.')
+    }
+
+    return fileName
+  }
+
   function handleChange(file: File) {
+    let fileName = removeFileExtension(file.name)
+
+    setFormData((prev) => ({ ...prev, name: fileName }))
     setFile(file)
   }
 
