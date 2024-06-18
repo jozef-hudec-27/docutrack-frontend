@@ -9,6 +9,11 @@ import '../styles/globals.scss'
 
 const arimo = Arimo({ subsets: ['latin'] })
 
+export const metadata = {
+  title: 'DocuTrack',
+  description: 'DocuTrack is a document tracking system that helps you keep track of your documents.',
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
