@@ -37,26 +37,18 @@ function EditDocumentModal() {
     onError: () => {
       toast('Failed to edit the document.', { icon: '😠' })
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setDocumentToEdit(undefined)
 
-      const updateDocuments = (doc: Document) =>
-        doc.id === documentToEdit.id
-          ? {
-              ...doc,
-              ...formData,
-            }
-          : { ...doc }
+      const updatedDocument = data.data as Document
 
       setDocuments((prevDocuments) => {
-        const updatedDocuments = prevDocuments.map(updateDocuments)
-        return updatedDocuments
+        return [updatedDocument, ...prevDocuments.filter((doc) => doc.id !== documentToEdit.id)]
       })
 
       if (filteredDocuments.length) {
         setFilteredDocuments((prevDocuments) => {
-          const updatedDocuments = prevDocuments.map(updateDocuments)
-          return updatedDocuments
+          return [updatedDocument, ...prevDocuments.filter((doc) => doc.id !== documentToEdit.id)]
         })
       }
     },

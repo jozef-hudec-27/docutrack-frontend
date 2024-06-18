@@ -15,6 +15,8 @@ import DeleteDocumentModal from './components/Document/DeleteDocumentModal'
 import FilteredDocumentsModal from './components/Document/FilteredDocumentsModal'
 import withAuth from './hoc/with-auth'
 
+import type { Document as DocumentType } from './types/document-types'
+
 function Home() {
   const [nextDocumentsPage, setNextDocumentsPage] = useState<string | null>(null)
 
@@ -38,7 +40,7 @@ function Home() {
     try {
       const response = await fetchDocuments(Number(nextDocumentsPage.split('?page=')[1]))
       setNextDocumentsPage(response.next_page_url)
-      setDocuments([...documents, ...response.data])
+      setDocuments((prevDocuments) => [...prevDocuments, ...response.data])
 
       if (!response.next_page_url) {
         toast('All documents loaded.', { position: 'bottom-center' })
@@ -46,6 +48,20 @@ function Home() {
     } catch {
       toast('Could not fetch more documents.', { icon: '😠' })
     }
+  }
+
+  function uniqueDocuments(documents: DocumentType[]) {
+    const seen = new Set()
+
+    const uniqueDocuments = documents.filter((doc) => {
+      if (!seen.has(doc.id)) {
+        seen.add(doc.id)
+        return true
+      }
+      return false
+    })
+
+    return uniqueDocuments
   }
 
   useEffect(() => {
@@ -102,7 +118,7 @@ function Home() {
 
         {!initialDocumentsLoading && !!documents.length && (
           <div className="flex flex-col gap-[32px] w-11/12 md:w-2/3 lg:w-1/3">
-            {documents.map((doc) => {
+            {uniqueDocuments(documents).map((doc) => {
               return <Document key={doc.id} doc={doc} />
             })}
           </div>

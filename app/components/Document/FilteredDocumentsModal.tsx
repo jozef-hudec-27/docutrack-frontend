@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-
 import useFilterDocumentStore from '../../state/filter-document-store'
 
 import FilterDocumentsForm from './FilterDocumentsForm'
@@ -7,38 +5,43 @@ import Modal from '../modal/Modal'
 import Document from './Document'
 
 function FilteredDocumentsModal() {
-  const [filteredDocuments, setFilteredDocuments, nameFilter, tagFilter] = useFilterDocumentStore((state) => [
+  const [
+    filteredDocuments,
+    setFilteredDocuments,
+    showFilteredDocumentsModal,
+    setShowFilteredDocumentsModal,
+    filteringDocuments,
+  ] = useFilterDocumentStore((state) => [
     state.filteredDocuments,
     state.setFilteredDocuments,
-    state.tagFilter,
-    state.nameFilter,
+    state.showFilteredDocumentsModal,
+    state.setShowFilteredDocumentsModal,
+    state.filteringDocuments,
   ])
 
-  useEffect(() => {
-    if (nameFilter || tagFilter) {
-      // Name filter input or tag filter input must be focused before the modal is opened
-      const activeElement = document.activeElement
+  function setIsOpen(open: boolean) {
+    setShowFilteredDocumentsModal(open)
 
-      const modalInputId = `${activeElement?.id}-modal`
-
-      setTimeout(() => {
-        document.getElementById(modalInputId)?.focus()
-      }, 0)
+    if (!open) {
+      setFilteredDocuments([])
     }
-  }, [nameFilter, tagFilter])
+  }
 
   return (
-    <Modal isOpen={!!nameFilter || !!tagFilter} setIsOpen={function () {}} cls="!w-11/12 !sm:w-3/4">
+    <Modal isOpen={showFilteredDocumentsModal} setIsOpen={setIsOpen} cls="!w-11/12 !sm:w-3/4">
       <FilterDocumentsForm modal />
 
       <div className="flex flex-col gap-[32px] w-11/12 md:w-1/2 mx-auto mt-[96px] h-[200px] sm:h-[400px] overflow-y-auto">
-        {!!filteredDocuments.length ? (
-          filteredDocuments.map((doc) => {
-            return <Document key={doc.id} doc={doc} />
-          })
-        ) : (
-          <p>No documents found.</p>
-        )}
+        {filteringDocuments && <p>Filtering documents...</p>}
+
+        {!filteringDocuments &&
+          (!!filteredDocuments.length ? (
+            filteredDocuments.map((doc) => {
+              return <Document key={doc.id} doc={doc} />
+            })
+          ) : (
+            <p>No documents found.</p>
+          ))}
       </div>
     </Modal>
   )
