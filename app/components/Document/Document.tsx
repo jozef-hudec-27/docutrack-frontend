@@ -1,12 +1,29 @@
 import { useRef, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { toast } from 'react-hot-toast'
-import { FileEarmark, Tag, Download, Pencil, Trash3 } from 'react-bootstrap-icons'
+import {
+  FileEarmark,
+  FileEarmarkCode,
+  FileEarmarkExcel,
+  FileEarmarkImage,
+  FileEarmarkMusic,
+  FileEarmarkPlay,
+  FileEarmarkPpt,
+  FileEarmarkWord,
+  FileEarmarkPdf,
+  FileEarmarkZip,
+  FileEarmarkText,
+  Tag,
+  Download,
+  Pencil,
+  Trash3,
+} from 'react-bootstrap-icons'
 
 import useDocumentStore from '../../state/document-store'
 
 import api from '../../api/axios-instance'
 import { limitLength } from '../../utils'
+import { audioTypes, videoTypes, imageTypes, compressedTypes, codeTypes } from '../../config'
 
 import type { Document as DocumentType } from '../../types/document-types'
 
@@ -17,6 +34,8 @@ type DocumentProps = {
 function Document({ doc }: DocumentProps) {
   const [expanded, setExpanded] = useState(false)
   const moreButtonRef = useRef<HTMLButtonElement>(null)
+
+  const fileType = doc.file_path.split('.').pop()?.toUpperCase()
 
   const [setDocumentToEdit, setDocumentToDelete] = useDocumentStore(
     useShallow((state) => [state.setDocumentToEdit, state.setDocumentToDelete])
@@ -45,6 +64,28 @@ function Document({ doc }: DocumentProps) {
     }
   }
 
+  const FileIcon = audioTypes.includes(fileType)
+    ? FileEarmarkMusic
+    : videoTypes.includes(fileType)
+    ? FileEarmarkPlay
+    : imageTypes.includes(fileType)
+    ? FileEarmarkImage
+    : codeTypes.includes(fileType)
+    ? FileEarmarkCode
+    : compressedTypes.includes(fileType)
+    ? FileEarmarkZip
+    : fileType === 'PDF'
+    ? FileEarmarkPdf
+    : fileType === 'DOC' || fileType === 'DOCX'
+    ? FileEarmarkWord
+    : fileType === 'XLS' || fileType === 'XLSX'
+    ? FileEarmarkExcel
+    : fileType === 'PPT' || fileType === 'PPTX'
+    ? FileEarmarkPpt
+    : fileType === 'TXT'
+    ? FileEarmarkText
+    : FileEarmark
+
   return (
     <div
       className={`flex flex-col gap-[8px] p-[12px] hover:bg-black-2 focus-within:bg-black-2 rounded-[8px] ${
@@ -66,7 +107,7 @@ function Document({ doc }: DocumentProps) {
       </div>
 
       <div className="flex items-center gap-[12px] text-black-100">
-        <FileEarmark size={24} className="min-w-[24px]" aria-hidden />
+        <FileIcon size={24} className="min-w-[24px]" aria-hidden />
         <p>{limitLength(doc.name, 75)}</p>
       </div>
 
