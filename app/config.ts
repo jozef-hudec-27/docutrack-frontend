@@ -35,4 +35,14 @@ export const fileTypes = [
   'TAR',
   'GZ',
   'BZ2', // Compressed file types
+  'PY',
+  'JS',
+  'JAVA',
+  'CPP',
+  'CS',
+  'PHP',
+  'SWIFT',
+  'RB',
+  'HTML',
+  'CSS', // Code file types
 ]
