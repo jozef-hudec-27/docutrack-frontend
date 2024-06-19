@@ -124,7 +124,11 @@ function EditDocumentModal() {
     const data = { ...formData }
 
     if (!!!data.description) {
-      delete data.description
+      if (documentToEdit.description) {
+        data.description = '...'
+      } else {
+        delete data.description
+      }
     }
 
     editDocumentMutation.mutate(data)
